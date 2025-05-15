@@ -2,6 +2,14 @@ import pandas as pd
 from sklearn.model_selection import train_test_split 
 import os 
 
+input_file = 'data/raw_data/raw.csv'
+output_dir = 'data/processed_data/'
+
+# Create the output directory if it doesn't exist
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
+
 # Check if the directory exists, if not create it
 if os.path.isfile('data/raw_data/raw.csv'):
     data = pd.read_csv('data/raw_data/raw.csv', index_col=0)

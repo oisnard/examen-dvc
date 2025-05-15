@@ -1,0 +1,47 @@
+stages:
+  split:
+    cmd: python src/data/make_dataset.py
+    deps:
+    - data/raw_data
+    - src/data/make_dataset.py
+    outs:
+    - data/processed_data/X_test.csv
+    - data/processed_data/X_train.csv
+    - data/processed_data/y_test.csv
+    - data/processed_data/y_train.csv
+  normalize:
+    cmd: python src/data/normalize_dataset.py
+    deps:
+    - data/processed_data/X_test.csv
+    - data/processed_data/X_train.csv
+    - src/data/normalize_dataset.py
+    outs:
+    - data/processed_data/X_test_scaled.csv
+    - data/processed_data/X_train_scaled.csv
+  gridsearch:
+    cmd: python src/models/model_gridsearch.py
+    deps:
+    - data/processed_data/X_train_scaled.csv
+    - data/processed_data/y_train.csv
+    - src/models/model_gridsearch.py
+    outs:
+    - models/best_params.pkl
+  train:
+    cmd: python src/models/model_train.py
+    deps:
+    - data/processed_data/X_train_scaled.csv
+    - data/processed_data/y_train.csv
+    - models/best_params.pkl
+    - src/models/model_train.py
+    outs:
+    - models/model.pkl
+  evaluate:
+    cmd: python src/models/model_evaluate.py
+    deps:
+    - data/processed_data/X_test_scaled.csv
+    - data/processed_data/y_test.csv
+    - models/model.pkl
+    - src/models/model_evaluate.py
+    metrics:
+    - metrics/scores.json:
+        cache: false
