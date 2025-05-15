@@ -27,3 +27,7 @@ results["Mean Absolute Percentage Error"] = mean_absolute_percentage_error(y_tes
 # Export the results to a JSON file
 with open('metrics/scores.json', 'w') as f:
     json.dump(results, f, indent=4)
+
+# Export the predictions to a CSV file
+y_pred_df = pd.DataFrame(y_pred, columns=['Predicted'])
+y_pred_df.to_csv('data/predictions.csv', index=False)
