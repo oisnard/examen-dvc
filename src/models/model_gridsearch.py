@@ -23,7 +23,7 @@ param_grid = {
 # Initialize the GridSearchCV object
 grid_search = GridSearchCV(estimator=model, 
                              param_grid=param_grid, 
-                             scoring='neg_mean_absolute_error', 
+                             scoring='r2', 
                              cv=5, 
                              n_jobs=-1, 
                              verbose=2)
