@@ -30,4 +30,5 @@ with open('metrics/scores.json', 'w') as f:
 
 # Export the predictions to a CSV file
 y_pred_df = pd.DataFrame(y_pred, columns=['Predicted'])
-y_pred_df.to_csv('data/predictions.csv', index=False)
+y_pred_df.index = y_test.index
+y_pred_df.to_csv('data/predictions.csv', index=True)
