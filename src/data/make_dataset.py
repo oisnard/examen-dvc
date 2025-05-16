@@ -3,7 +3,12 @@ from sklearn.model_selection import train_test_split
 import os 
 
 input_file = 'data/raw_data/raw.csv'
+input_dir = 'data/raw_data/'
 output_dir = 'data/processed_data/'
+
+# Create the input directory if it doesn't exist
+if not os.path.exists(input_dir):
+    os.makedirs(input_dir)
 
 # Create the output directory if it doesn't exist
 if not os.path.exists(output_dir):
@@ -11,8 +16,8 @@ if not os.path.exists(output_dir):
 
 
 # Check if the directory exists, if not create it
-if os.path.isfile('data/raw_data/raw.csv'):
-    data = pd.read_csv('data/raw_data/raw.csv', index_col=0)
+if os.path.isfile(input_file):
+    data = pd.read_csv(input_file, index_col=0)
 else:
     url = "https://datascientest-mlops.s3.eu-west-1.amazonaws.com/mlops_dvc_fr/raw.csv"
     data = pd.read_csv(url, index_col=0)
