@@ -1,5 +1,5 @@
 import pandas as pd 
-from sklearn.preprocessing import StandardScaler 
+from sklearn.preprocessing import RobustScaler 
 
 # Get the data
 X_train = pd.read_csv('data/processed_data/X_train.csv', index_col=0)
@@ -7,7 +7,7 @@ X_test = pd.read_csv('data/processed_data/X_test.csv', index_col=0)
 
 # Scaling the features
 # Initialize the StandardScaler 
-scaler = StandardScaler()
+scaler = RobustScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
