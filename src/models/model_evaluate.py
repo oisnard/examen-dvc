@@ -1,7 +1,6 @@
 import pandas as pd 
 import joblib 
 import json
-from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import (
     mean_squared_error, 
     mean_absolute_error, 

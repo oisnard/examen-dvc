@@ -1,7 +1,7 @@
 import pandas as pd 
 import joblib
 import pickle
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import ElasticNet
 from sklearn.metrics import mean_squared_error
 
 # Load the training data    
@@ -15,7 +15,7 @@ with open('models/best_params.pkl', 'rb') as f:
 
 
 # Define the model with the best parameters 
-model = GradientBoostingRegressor(**best_params)
+model = ElasticNet(**best_params)
 # Fit the model to the training data
 model.fit(X_train_scaled, y_train.values.ravel())
 # Save the model to a file
