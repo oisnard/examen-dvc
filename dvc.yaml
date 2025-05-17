@@ -4,6 +4,7 @@ stages:
     deps:
     - data/raw_data/raw.csv
     - src/data/make_dataset.py
+    - params.yaml
     params:
     - split.test_size
     - split.random_state
@@ -27,6 +28,7 @@ stages:
     - data/processed_data/X_train_scaled.csv
     - data/processed_data/y_train.csv
     - src/models/model_gridsearch.py
+    - params.yaml
     params:
     - gridsearch.param_grid
     - gridsearch.cv
