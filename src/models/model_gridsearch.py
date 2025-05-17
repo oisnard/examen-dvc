@@ -1,6 +1,7 @@
 import pandas as pd 
 import numpy as np
-from sklearn.linear_model import ElasticNet
+from sklearn.linear_model import Ridge, LinearRegression 
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, StackingRegressor
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import mean_squared_error
 import pickle 
@@ -11,18 +12,26 @@ y_train = pd.read_csv('data/processed_data/y_train.csv', index_col=0)
 X_test_scaled = pd.read_csv('data/processed_data/X_test_scaled.csv', index_col=0)
 y_test = pd.read_csv('data/processed_data/y_test.csv', index_col=0)
 # Define the model
-model = ElasticNet()
+base_models = [
+    ('ridge', Ridge()),
+    ('rf', RandomForestRegressor()),
+    ('gbr', GradientBoostingRegressor())
+]
+
+final_estimator = LinearRegression()
+model = StackingRegressor(estimators=base_models, final_estimator=final_estimator, passthrough=True, cv=5)
+
 # Define the hyperparameters and their values to be tested      
 param_grid = {
-    'alpha': [0.1, 0.5, 1.0, 2.0, 5.0],
-    'l1_ratio': [0.1, 0.5, 0.9, 1.0],
-    'fit_intercept': [True, False],
-    'max_iter': [1000, 5000, 10000],
-    'tol': [0.0001, 0.001, 0.01],
-    'warm_start': [True, False],
-    'selection': ['cyclic', 'random'],
-    'positive': [True, False],
-    'precompute': [True, False]
+    'ridge__alpha': [0.1, 1.0, 10.0],
+    'rf__n_estimators': [50, 100, 200],
+    'rf__max_depth': [None, 10, 20],
+    'gbr__n_estimators': [50, 100, 200],
+    'gbr__learning_rate': [0.01, 0.1, 1.0],
+    'gbr__max_depth': [3, 5, 7],
+    'gbr__min_samples_split': [2, 5, 10],
+    'gbr__min_samples_leaf': [1, 2, 4],
+    'final_estimator__fit_intercept': [True, False]
     }
 # Initialize the GridSearchCV object
 grid_search = GridSearchCV(estimator=model, 
