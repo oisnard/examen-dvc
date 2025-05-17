@@ -4,6 +4,9 @@ stages:
     deps:
     - data/raw_data/raw.csv
     - src/data/make_dataset.py
+    params:
+    - split.test_size
+    - split.random_state
     outs:
     - data/processed_data/X_test.csv
     - data/processed_data/X_train.csv
@@ -24,6 +27,10 @@ stages:
     - data/processed_data/X_train_scaled.csv
     - data/processed_data/y_train.csv
     - src/models/model_gridsearch.py
+    params:
+    - gridsearch.param_grid
+    - gridsearch.cv
+    - gridsearch.scoring
     outs:
     - models/best_params.pkl
   train:

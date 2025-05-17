@@ -1,6 +1,7 @@
 import pandas as pd 
 from sklearn.model_selection import train_test_split 
 import os 
+import yaml 
 
 input_file = 'data/raw_data/raw.csv'
 input_dir = 'data/raw_data/'
@@ -28,9 +29,21 @@ else:
 data_features = data.drop(columns=['silica_concentrate'])
 data_target = data['silica_concentrate']
 
-# Define the ratio for the train-test split
-# 70% of the data will be used for training and 30% for testing
-RATIO_TEST = 0.3
+# Define the ratio for the train-test split and random state
+with open('params.yaml') as file:
+    params = yaml.safe_load(file)
+    RATIO_TEST = params['split']['test_size']
+    RANDOM_STATE = params['split']['random_state']
+# If the ratio is not defined in the params.yaml file, use a default value
+if RATIO_TEST is None:
+    # Default value for the test size
+    # 30% of the data will be used for testing and 70% for training
+    RATIO_TEST = 0.3
+# If the random state is not defined in the params.yaml file, use a default value
+if RANDOM_STATE is None:
+    # Default value for the random state
+    RANDOM_STATE = 42
+
 
 
 # Split the data into train and test sets   
@@ -38,7 +51,7 @@ X_train, X_test, y_train, y_test = train_test_split(data_features,
                                                     data_target, 
                                                     test_size=RATIO_TEST, 
                                                     shuffle=True,
-                                                    random_state=42)
+                                                    random_state=RANDOM_STATE)
 
 # Save the train and test sets to CSV files 
 X_train.to_csv('data/processed_data/X_train.csv')
